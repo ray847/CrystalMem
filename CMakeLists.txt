@@ -1,0 +1,47 @@
+cmake_minimum_required(VERSION 3.15)
+
+# Project Options
+project(CrystalMem CXX)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# External Libraries
+add_subdirectory(lib/CrystalUtil)
+add_subdirectory(lib/foonathan_memory)
+
+# Internal Library
+add_library(CrystalMem)
+target_sources(CrystalMem
+  PRIVATE
+  src/memory.cpp
+)
+target_include_directories(CrystalMem
+  PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(CrystalMem
+  PUBLIC
+  CrystalUtil
+  PRIVATE
+  foonathan_memory
+)
+
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  message(STATUS "Building CrystalMem Standalone (with tests/main)")
+  # Main
+  add_executable(main main.cpp)
+  target_include_directories(main
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+  )
+  target_link_libraries(main
+  PUBLIC
+    CrystalMem
+    CrystalUtil
+  )
+
+  # Testing
+  add_subdirectory(test)
+endif()
+

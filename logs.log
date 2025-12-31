@@ -1,0 +1,19 @@
+[2025-12-31 22:54:19.326] [normal_logger] [trace] OS resource(0x7ffdad2e09c0) initailized.
+[2025-12-31 22:54:19.326] [normal_logger] [debug] Allocating from pool.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f949000 from default resource(0x7ffdad2e09c0) of size 4096 & align 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f94b000 from default resource(0x7ffdad2e09c0) of size 4096 & align 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [debug] Clearing the pool.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f94b000 from default resource(0x7ffdad2e09c0) of size 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f949000 from default resource(0x7ffdad2e09c0) of size 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [debug] Allocating vector from resource.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f946340 from default resource(0x7ffdad2e09c0) of size 260 & align 4.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f946450 from default resource(0x7ffdad2e09c0) of size 520 & align 4.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f946340 from default resource(0x7ffdad2e09c0) of size 260.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f946660 from default resource(0x7ffdad2e09c0) of size 1040 & align 4.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f946450 from default resource(0x7ffdad2e09c0) of size 520.
+[2025-12-31 22:54:19.326] [normal_logger] [debug] Clearing the pool.
+[2025-12-31 22:54:19.326] [normal_logger] [debug] Allocating list from resource.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Allocation at 0x57ec3f949000 from default resource(0x7ffdad2e09c0) of size 4096 & align 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f946660 from default resource(0x7ffdad2e09c0) of size 1040.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] Deallocation at 0x57ec3f949000 from default resource(0x7ffdad2e09c0) of size 4096.
+[2025-12-31 22:54:19.326] [normal_logger] [trace] OS resource(0x7ffdad2e09c0) deleted.
