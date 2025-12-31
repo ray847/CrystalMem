@@ -8,7 +8,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # External Libraries
 add_subdirectory(lib/CrystalUtil)
-add_subdirectory(lib/foonathan_memory)
 
 # Internal Library
 add_library(CrystalMem)
@@ -24,7 +23,6 @@ target_link_libraries(CrystalMem
   PUBLIC
   CrystalUtil
   PRIVATE
-  foonathan_memory
 )
 
 if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
