@@ -1,0 +1,30 @@
+---
+BasedOnStyle: Google
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments:
+  PadOperators: false
+AlignOperands: AlignAfterOperator
+AlignTrailingComments:
+  Kind: Leave
+AllowShortBlocksOnASingleLine: Always
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AlwaysBreakBeforeMultilineStrings: false
+BinPackArguments: false
+BinPackLongBracedList: false
+BinPackParameters: OnePerLine
+BreakAfterAttributes: Never
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeTemplateCloser: true
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializers: AfterColon
+BreakInheritanceList: AfterComma
+Cpp11BracedListStyle: false
+EnumTrailingComma: Insert
+InsertTrailingCommas: Wrapped
+KeepEmptyLines:
+  AtStartOfFile: false
+ReferenceAlignment: Left
+RemoveSemicolon: true
+RequiresClausePosition: WithPreceding
