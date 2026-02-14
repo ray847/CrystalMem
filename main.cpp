@@ -18,5 +18,6 @@ int main() {
   auto obj1 = pool.New<SmallObject>();
 
   pool.Del(obj1);
+
   return 0;
 }

@@ -19,8 +19,17 @@ union alignas(kSize) SLUBSlotNode {
 // clang-format off
   static_assert(kSize >= sizeof(size_t), "Size of a slot must be larger than that of a free list node.");
 // clang-format on
+
   std::array<std::byte, kSize> data;
   size_t free_nxt;
+  
+  /* Constructor */
+  SLUBSlotNode () {
+// clang-format off
+    /* Assertion */
+    static_assert(sizeof(SLUBSlotNode) == kSize, "SLUBSlotNode size exceeds requirement.");
+// clang-format on
+  }
 };
 
 } // crystal::mem

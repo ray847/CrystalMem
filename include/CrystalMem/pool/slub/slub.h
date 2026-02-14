@@ -14,12 +14,11 @@
 #include "../concept.h" // AnyPool
 #include "bucket.h" // SLUBBucket
 
-
 namespace crystal::mem {
 
 using std::allocator, std::byte, std::tuple, std::index_sequence,
     std::make_index_sequence, std::numeric_limits, std::allocator_traits,
-    std::get, std::apply, std::move;
+    std::get, std::apply;
 
 template <size_t kBlockSize, integer_sequence kSlotSizes, AnyVendor Vendor>
 class SLUBPool {
@@ -31,7 +30,7 @@ class SLUBPool {
   using Bucket = SLUBBucket<kBlockSize, kSlotSize, Vendor>;
 
   /* Constructor */
-  SLUBPool(const Vendor& vendor = {}) : vendor_(vendor) {
+  SLUBPool(Vendor& vendor = {}) : vendor_(vendor), buckets_(Buckets::Init(vendor)) {
   }
   /* Destructor */
   ~SLUBPool() {
@@ -95,7 +94,7 @@ class SLUBPool {
     DiscreteDealloc(addr);
   }
   void Clear() {
-    apply([](auto& bucket) { bucket.Clear(); }, buckets_);
+    apply([](auto&... buckets) { (buckets.Clear(), ...); }, buckets_);
   }
 
  private:
@@ -106,8 +105,12 @@ class SLUBPool {
   template <size_t... Is>
   struct ArraytoTuple<index_sequence<Is...>> {
     using type = tuple<Bucket<kSlotSizes[Is]>...>;
+    static auto Init(Vendor& vendor) {
+      return type{Bucket<kSlotSizes[Is]>(vendor)...};
+    }
   };
-  ArraytoTuple<make_index_sequence<kSlotSizes.size()>>::type buckets_;
+  using Buckets = ArraytoTuple<make_index_sequence<kSlotSizes.size()>>;
+  Buckets::type buckets_;
 
   /* Functions */
   consteval size_t BucketforSize(size_t size) {

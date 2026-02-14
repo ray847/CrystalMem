@@ -6,6 +6,7 @@
 #include <array> // std::array
 
 #include <CrystalBase/bitwise.h> // lowbit
+#include <CrystalBase/static_format.h> // static_format
 
 #include "slot.h" // SLUBSlot
 
@@ -26,11 +27,12 @@ template <size_t kSize, size_t kSlotSize>
 requires (lowbit(kSize) == kSize) // size must be some power of 2
 class alignas(kSize) SLUBBlockNode {
  public:
-  using SlotNode = SLUBSlotNode<kSize>;
+  using SlotNode = SLUBSlotNode<kSlotSize>;
 
   /* Constants */
   /* Available size for slots. */
-  static constexpr size_t kCapacity = (kSize - sizeof(size_t));
+  static constexpr size_t kCapacity =
+      (kSize - sizeof(SLUBBlockNode*) * 2 - sizeof(size_t) - sizeof(size_t));
   static constexpr size_t kNSlots = kCapacity / kSlotSize;
   static_assert(kCapacity > 0, "Slot size too big for a single block.");
 
@@ -51,6 +53,9 @@ class alignas(kSize) SLUBBlockNode {
 
   /* Constructor */
   constexpr SLUBBlockNode() {
+    /* Assertions */
+    static_assert(sizeof(SLUBBlockNode) <= kSize);
+
     head_.free_head = 0; // point to the first slot
     size_t i = 1;
     for (auto slot : slots_) slot.free_nxt = i++;

@@ -6,8 +6,6 @@
 
 namespace crystal::mem {
 
-using std::allocator_traits;
-
 /**
  * A bucket of blocks that have the same slot size.
  *
@@ -70,7 +68,7 @@ class SLUBBucket {
   void Clear() {
     while (block_head_) {
       BlockNode* nxt = block_head_->next_;
-      vendor_.Dealloc(block_head_, sizeof(BlockNode),  alignof(BlockNode));
+      vendor_.Dealloc(block_head_, sizeof(BlockNode), static_cast<align_t>(alignof(BlockNode)));
       block_head_ = nxt;
     }
   }
@@ -94,10 +92,16 @@ class SLUBBucket {
    */
   BlockNode& AvailableBlock() {
     /* Expand blocks. */
-    if (!block_head_ || block_head_->Full()) [[unlikely]] {
+    if (block_head_ == nullptr) {
+      BlockNode* new_block = reinterpret_cast<BlockNode*>(vendor_.Alloc(
+          sizeof(BlockNode), static_cast<align_t>(alignof(BlockNode))));
+      new (new_block) BlockNode();
+      block_head_ = new_block;
+    } else if (block_head_->Full()) [[unlikely]] {
       BlockNode* curr_head = block_head_;
       BlockNode* new_block = reinterpret_cast<BlockNode*>(vendor_.Alloc(
           sizeof(BlockNode), static_cast<align_t>(alignof(BlockNode))));
+      new (new_block) BlockNode();
       new_block->next_ = curr_head;
       new_block->prev_ = nullptr;
       curr_head->prev_ = new_block;
@@ -109,12 +113,21 @@ class SLUBBucket {
     BlockNode* curr = &node;
     BlockNode* prev = node.prev_;
     BlockNode* next = node.next_;
-    prev->next_ = next;
-    next->prev_ = prev;
-    curr->next_ = block_head_;
-    curr->prev_ = nullptr;
-    block_head_->prev_ = curr;
-    block_head_ = curr;
+    if (prev == nullptr) return;
+    if (next) {
+      prev->next_ = next;
+      next->prev_ = prev;
+      curr->next_ = block_head_;
+      curr->prev_ = nullptr;
+      block_head_->prev_ = curr;
+      block_head_ = curr;
+    } else {
+      prev->next_ = nullptr;
+      curr->next_ = block_head_;
+      curr->prev_ = nullptr;
+      block_head_->prev_ = curr;
+      block_head_ = curr;
+    }
   }
 };
 
