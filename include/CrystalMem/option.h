@@ -1,5 +1,5 @@
-#ifndef CRYSTALMEM_CHARACTERISTICS_H_
-#define CRYSTALMEM_CHARACTERISTICS_H_
+#ifndef CRYSTALMEM_OPTION_H_
+#define CRYSTALMEM_OPTION_H_
 
 namespace crystal::mem {
 

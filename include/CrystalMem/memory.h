@@ -3,12 +3,10 @@
 
 // NOLINTBEGIN
 #include "CrystalMem/global.h"
-#include "CrystalMem/types.h"
-#include "CrystalMem/options.h"
+#include "CrystalMem/type.h"
+#include "CrystalMem/option.h"
 #include "CrystalMem/resource.h"
-#include "CrystalMem/resource/os_resource.h"
 #include "CrystalMem/pool.h"
-#include "CrystalMem/allocator.h"
 // NOLINTEND
 
 #endif

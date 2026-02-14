@@ -1,7 +1,7 @@
 #ifndef CRYSTALMEM_ALLOCATOR_H_
 #define CRYSTALMEM_ALLOCATOR_H_
 
-#include "CrystalMem/options.h" // Characteristics
+#include "CrystalMem/option.h" // Characteristics
 #include "CrystalMem/allocator/dynamic_allocator_impl.h" // DynAllocatorImpl
 #include "CrystalMem/allocator/mono_allocator_impl.h" // MonoAllocatorImpl
 

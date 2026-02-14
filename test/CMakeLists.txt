@@ -4,8 +4,7 @@ add_subdirectory(GoogleTest)
 
 add_executable(
   test
-  resource_test.cpp
-  pool/pool_impl_test.cpp
+  test.cpp
 )
 target_link_libraries(
   test

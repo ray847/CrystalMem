@@ -1,5 +1,5 @@
-#ifndef CRYSTALMEM_TYPES_H_
-#define CRYSTALMEM_TYPES_H_
+#ifndef CRYSTALMEM_TYPE_H_
+#define CRYSTALMEM_TYPE_H_
 
 #include <cstdint> // uint32_t
 

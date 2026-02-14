@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # External Libraries
-add_subdirectory(lib/CrystalUtil)
+add_subdirectory(lib/CrystalBase)
 
 # Internal Library
 add_library(CrystalMem)
@@ -21,8 +21,7 @@ target_include_directories(CrystalMem
 )
 target_link_libraries(CrystalMem
   PUBLIC
-  CrystalUtil
-  PRIVATE
+  CrystalBase
 )
 
 if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -36,7 +35,6 @@ if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
   target_link_libraries(main
   PUBLIC
     CrystalMem
-    CrystalUtil
   )
 
   # Testing
