@@ -51,17 +51,16 @@ class SLUBPool {
   T* DiscreteAlloc() {
     constexpr size_t bucket_idx = BucketforSize(sizeof(T));
     if constexpr (bucket_idx == -1ul) { // no bucket
-      return vendor_.Alloc(sizeof(T), alignof(T));
-    }
-    return reinterpret_cast<T*>(get<bucket_idx>(buckets_).AllocSlot());
+      return reinterpret_cast<T*>(
+          vendor_.Alloc(sizeof(T), static_cast<align_t>(alignof(T))));
+    } else return reinterpret_cast<T*>(get<bucket_idx>(buckets_).AllocSlot());
   }
   template <typename T>
   void DiscreteDealloc(T* ptr) {
     constexpr size_t bucket_idx = BucketforSize(sizeof(T));
     if constexpr (bucket_idx == -1ul) { // no bucket
-      vendor_.Dealloc(ptr, sizeof(T), alignof(T));
-    }
-    get<bucket_idx>(buckets_).DeallocSlot(ptr);
+      vendor_.Dealloc(ptr, sizeof(T), static_cast<align_t>(alignof(T)));
+    } else get<bucket_idx>(buckets_).DeallocSlot(ptr);
   }
   template <typename T>
   T* ContinuousAlloc(size_t n) {

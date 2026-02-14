@@ -13,7 +13,7 @@ using std::ignore;
 class OSResource {
  public:
   /* Constructor */
-  explicit OSResource() = default;
+  OSResource() = default;
   OSResource(const OSResource& other) = delete; // no copying
   OSResource(OSResource&& other) {
     ignore = Close(); // nothing can go wrong
@@ -36,7 +36,7 @@ class OSResource {
     return ptr;
   }
   void Dealloc(void* ptr, size_t size, align_t align) {
-    operator delete(ptr, size);
+    operator delete(ptr, size, align);
   }
 
  private:

@@ -3,6 +3,7 @@
 
 #include "resource/concept.h"
 #include "resource/os.h"
+#include "resource/debug.h"
 
 namespace crystal::mem {
 
