@@ -13,6 +13,8 @@ template <typename T>
 concept AnyVendor = requires(T vendor, size_t size, align_t align, void* ptr) {
   { vendor.Alloc(size, align) } -> same_as<void*>;
   { vendor.Dealloc(ptr, size, align) } -> same_as<void>;
+  vendor == vendor;
+  vendor != vendor;
 } && copy_constructible<T>;
 
 } // namespace crystal::mem

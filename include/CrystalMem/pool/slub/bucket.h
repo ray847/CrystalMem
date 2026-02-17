@@ -6,6 +6,14 @@
 
 namespace crystal::mem {
 
+class SLUBBucketInterface {
+ public:
+  virtual void* AllocSlot() = 0;
+  virtual void DeallocSlot(void*) = 0;
+  virtual void Clear() = 0;
+  virtual ~SLUBBucketInterface() = default;
+};
+
 /**
  * A bucket of blocks that have the same slot size.
  *
@@ -16,15 +24,15 @@ namespace crystal::mem {
  * This class is responsible for releasing all the block nodes.
  */
 template <size_t kBlockSize, size_t kSlotSize, AnyVendor Vendor>
-class SLUBBucket {
+class SLUBBucket : public SLUBBucketInterface {
  public:
   using BlockNode = SLUBBlockNode<kBlockSize, kSlotSize>;
 
   /* Constructor */
-  SLUBBucket(Vendor& vendor = {}) : vendor_(vendor) {
+  SLUBBucket(const Vendor& vendor = {}) : vendor_(vendor) {
   }
   /* Destructor */
-  ~SLUBBucket() {
+  virtual ~SLUBBucket() override {
     Clear();
   }
   /* No Copying */
@@ -47,7 +55,7 @@ class SLUBBucket {
   /**
    * Allocate a slot with size of `kSlotSize`.
    */
-  [[nodiscard]] void* AllocSlot() {
+  [[nodiscard]] virtual void* AllocSlot() override {
     BlockNode& block = AvailableBlock();
     void* slot = block.AllocSlot();
     return slot;
@@ -55,7 +63,7 @@ class SLUBBucket {
   /**
    * Deallocate a slot with the input address.
    */
-  void DeallocSlot(void* addr) {
+  virtual void DeallocSlot(void* addr) override {
     BlockNode* block =
         BlockNode::FromSlot(reinterpret_cast<BlockNode::SlotNode*>(addr));
     block->DeallocSlot(addr);
@@ -65,7 +73,7 @@ class SLUBBucket {
   /**
    * Clear the bucket by deallocating all blocks.
    */
-  void Clear() {
+  virtual void Clear() override {
     while (block_head_) {
       BlockNode* nxt = block_head_->next_;
       vendor_.Dealloc(block_head_, sizeof(BlockNode), static_cast<align_t>(alignof(BlockNode)));

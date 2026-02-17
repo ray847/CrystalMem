@@ -1,4 +1,4 @@
-#include <array> // std::array
+#include <array>    // std::array
 #include <iostream> // std::cout
 
 #include <CrystalMem/memory.h>
@@ -12,26 +12,30 @@ using SmallObject = std::byte;
 
 int main() {
 
-  using std::cout, std::endl;
+  using std::cout, std::endl, std::array;
 
-  crystal::mem::DebugResource<crystal::mem::OSResource> resource;
-  crystal::mem::Vendor vendor{resource};
-  crystal::mem::SLUBPool<64, {8, 32}, decltype(vendor)> pool{vendor};
+  crystal::mem::DebugResource<crystal::mem::OSResource, "memory"> mem_resource;
+  crystal::mem::DebugResource<crystal::mem::OSResource, "logic"> logic_resource;
+  crystal::mem::Vendor mem_vendor{mem_resource};
+  crystal::mem::Vendor logic_vendor{logic_resource};
+  //crystal::mem::
+  //    SLUBPool<64, { 8, 32 }, decltype(mem_vendor), decltype(logic_vendor)>
+  //        pool{ mem_vendor, logic_vendor };
+  crystal::mem::
+      SafeBestFitPool<512, decltype(mem_vendor), decltype(logic_vendor)>
+          pool{ mem_vendor, logic_vendor };
 
   auto small = pool.New<SmallObject>();
-  auto medium1 = pool.New<MediumObject>();
-  auto medium2 = pool.New<MediumObject>();
-  auto big = pool.New<BigObject>();
+  MediumObject* medium_arr = pool.ContinuousAlloc<MediumObject>(3);
+  //auto big = pool.New<BigObject>();
 
   cout << "Small Object: " << small << endl;
-  cout << "Medium Object1: " << medium1 << endl;
-  cout << "Medium Object2: " << medium2 << endl;
-  cout << "Big Object: " << big << endl;
+  cout << "Medium Object Array: " << medium_arr << endl;
+  //cout << "Big Object: " << big << endl;
 
   pool.Del(small);
-  pool.Del(medium1);
-  pool.Del(medium2);
-  pool.Del(big);
+  pool.ContinuousDealloc(medium_arr, 3);
+  //pool.Del(big);
 
   return 0;
 }

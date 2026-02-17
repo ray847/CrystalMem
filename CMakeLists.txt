@@ -14,6 +14,9 @@ add_library(CrystalMem)
 target_sources(CrystalMem
   PRIVATE
   src/memory.cpp
+  src/header_only.cpp
+  src/pool/slub/slub.cpp
+  src/pool/safe_best_fit/safe_best_fit.cpp
 )
 target_include_directories(CrystalMem
   PUBLIC

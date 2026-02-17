@@ -32,6 +32,12 @@ class Vendor {
   void Dealloc(void* ptr, size_t size, align_t align) {
     resource_->Dealloc(ptr, size, align);
   }
+  bool operator==(const Vendor& other) const {
+    return resource_ == other.resource_;
+  }
+  bool operator!=(const Vendor& other) const {
+    return resource_ != other.resource_;
+  }
 
  private:
   Resource* resource_;
