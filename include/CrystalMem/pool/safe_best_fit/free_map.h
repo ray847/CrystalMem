@@ -126,13 +126,16 @@ class SafeBestFitFreeMap {
   /* Functions */
   auto Fit(void* node_addr, size_t node_size, size_t size, align_t align)
       -> optional<tuple<size_t, size_t, size_t>> {
-    size_t l_padding = reinterpret_cast<uint64_t>(node_addr)
-                     & (static_cast<uint64_t>(align) - 1);
-    if (node_size - l_padding >= size) {
-      size_t r_padding = node_size - l_padding - size;
-      return make_tuple(l_padding + r_padding, l_padding, r_padding);
+    uint64_t align_val = static_cast<uint64_t>(align);
+    uint64_t current_addr_val = reinterpret_cast<uint64_t>(node_addr);
+    uint64_t aligned_block_start_val =
+        (current_addr_val + align_val - 1) & ~(align_val - 1);
+    if (aligned_block_start_val + size > current_addr_val + node_size) {
+      return {}; // No fit
     }
-    return {};
+    size_t l_padding = aligned_block_start_val - current_addr_val;
+    size_t r_padding = node_size - l_padding - size;
+    return make_tuple(l_padding + r_padding, l_padding, r_padding);
   }
 };
 

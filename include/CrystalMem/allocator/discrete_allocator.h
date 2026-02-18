@@ -29,13 +29,13 @@ public:
   /* Functions */
   T* allocate(size_t n) {
 // clang-format off
-    assert(n != 1 && "Trying to allocate array of objects from discrete allocator.");
+    assert(n == 1 && "Discrete allocator can only allocate a single object.");
 // clang-format on
     return pool_.template DiscreteAlloc<T>();
   }
   void deallocate(T* ptr, size_t n) {
 // clang-format off
-    assert(n != 1 && "Trying to deallocate array of objects from discrete allocator.");
+    assert(n == 1 && "Discrete allocator can only deallocate a single object.");
 // clang-format on
     pool_.template DiscreteDealloc<T>(ptr);
   }

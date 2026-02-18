@@ -27,15 +27,15 @@ int main() {
 
   auto small = pool.New<SmallObject>();
   MediumObject* medium_arr = pool.ContinuousAlloc<MediumObject>(3);
-  //auto big = pool.New<BigObject>();
+  auto big = pool.New<BigObject>();
 
   cout << "Small Object: " << small << endl;
   cout << "Medium Object Array: " << medium_arr << endl;
-  //cout << "Big Object: " << big << endl;
+  cout << "Big Object: " << big << endl;
 
   pool.Del(small);
   pool.ContinuousDealloc(medium_arr, 3);
-  //pool.Del(big);
+  pool.Del(big);
 
   return 0;
 }
