@@ -122,6 +122,25 @@ class SLUBPool {
       bucket_interfaces_[bucket_idx]->DeallocSlot(reinterpret_cast<void*>(ptr));
     }
   }
+  void* RawAlloc(size_t size, align_t align) {
+    size_t bucket_idx = BucketforSize(size);
+    if (bucket_idx == -1ul) { // no bucket
+      void* addr = resource_vendor_.Alloc(size, align);
+      extern_allocs_[addr] = { size, align };
+      return addr;
+    } else {
+      return bucket_interfaces_[bucket_idx]->AllocSlot();
+    }
+  }
+  void RawDealloc(void* ptr, size_t size, align_t align) {
+    size_t bucket_idx = BucketforSize(size);
+    if (bucket_idx == -1ul) { // no bucket
+      resource_vendor_.Dealloc(ptr, size, align);
+      extern_allocs_.erase(ptr);
+    } else {
+      bucket_interfaces_[bucket_idx]->DeallocSlot(ptr);
+    }
+  }
   template <typename T, typename... Args>
   T* New(Args&&... args) {
     T* addr = DiscreteAlloc<T>();

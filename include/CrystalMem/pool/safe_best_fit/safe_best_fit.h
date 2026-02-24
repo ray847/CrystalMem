@@ -138,6 +138,28 @@ class SafeBestFitPool {
                         sizeof(T) * n,
                         static_cast<align_t>(alignof(T)));
   }
+  void* RawAlloc(size_t size, align_t align) {
+    if (size > kBlockSize) {
+      void* addr = resource_vendor_.Alloc(size, align);
+      extern_allocs_[addr] = { size, align };
+      return addr;
+    } else {
+      void* addr = free_map_.Alloc(size, align);
+      if (reinterpret_cast<size_t>(addr) == -1ul) {
+        void* new_block = reinterpret_cast<void*>(AppendBlock());
+        free_map_.InsertNode(
+            reinterpret_cast<void*>(reinterpret_cast<size_t>(new_block) + size),
+            kBlockSize - size);
+        return new_block;
+      } else return addr;
+    }
+  }
+  void RawDealloc(void* ptr, size_t size, align_t align) {
+    if (size > kBlockSize) {
+      resource_vendor_.Dealloc(ptr, size, align);
+      extern_allocs_.erase(ptr);
+    } else free_map_.Dealloc(ptr, size, align);
+  }
   template <typename T, typename ...Args>
   T* New(Args&&... args) {
     T* addr = DiscreteAlloc<T>();

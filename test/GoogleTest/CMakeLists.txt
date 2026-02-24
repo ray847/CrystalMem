@@ -8,5 +8,6 @@ if (NOT TARGET googletest)
   )
   # For Windows: Prevent overriding the parent project's compiler/linker settings
   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  set(BUILD_GMOCK ON CACHE BOOL "Build Google Mock as part of Google Test" FORCE)
   FetchContent_MakeAvailable(googletest)
 endif()
